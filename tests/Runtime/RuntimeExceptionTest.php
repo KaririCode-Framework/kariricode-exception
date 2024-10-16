@@ -13,19 +13,34 @@ final class RuntimeExceptionTest extends AbstractExceptionTest
     {
         $details = 'Unexpected null value';
         $exception = RuntimeException::unexpectedValue($details);
-        $this->assertExceptionStructure($exception, 'UNEXPECTED_VALUE', "Unexpected value: {$details}");
+        $this->assertExceptionStructure(
+            $exception,
+            'UNEXPECTED_VALUE',
+            "Unexpected value: {$details}",
+            2501
+        );
     }
 
     public function testOutOfMemory(): void
     {
         $exception = RuntimeException::outOfMemory();
-        $this->assertExceptionStructure($exception, 'OUT_OF_MEMORY', 'Out of memory error');
+        $this->assertExceptionStructure(
+            $exception,
+            'OUT_OF_MEMORY',
+            'Out of memory error',
+            2502
+        );
     }
 
     public function testClassNotFound(): void
     {
         $className = 'App\NonExistentClass';
         $exception = RuntimeException::classNotFound($className);
-        $this->assertExceptionStructure($exception, 'CLASS_NOT_FOUND', "Class not found: {$className}");
+        $this->assertExceptionStructure(
+            $exception,
+            'CLASS_NOT_FOUND',
+            "Class not found: {$className}",
+            2503
+        );
     }
 }

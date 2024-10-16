@@ -13,7 +13,12 @@ final class RoutingExceptionTest extends AbstractExceptionTest
     {
         $uri = '/unknown/path';
         $exception = RoutingException::routeNotFound($uri);
-        $this->assertExceptionStructure($exception, 'ROUTE_NOT_FOUND', "Route not found for URI: {$uri}");
+        $this->assertExceptionStructure(
+            $exception,
+            'ROUTE_NOT_FOUND',
+            "Route not found for URI: {$uri}",
+            2401
+        );
     }
 
     public function testMethodNotAllowed(): void
@@ -21,6 +26,11 @@ final class RoutingExceptionTest extends AbstractExceptionTest
         $method = 'POST';
         $uri = '/get-only-path';
         $exception = RoutingException::methodNotAllowed($method, $uri);
-        $this->assertExceptionStructure($exception, 'METHOD_NOT_ALLOWED', "Method {$method} not allowed for URI: {$uri}");
+        $this->assertExceptionStructure(
+            $exception,
+            'METHOD_NOT_ALLOWED',
+            "Method {$method} not allowed for URI: {$uri}",
+            2402
+        );
     }
 }

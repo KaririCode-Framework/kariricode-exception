@@ -14,7 +14,7 @@ class AbstractExceptionTest extends TestCase
 
     protected function setUp(): void
     {
-        $errorMessage = new ExceptionMessage('TEST_CODE', 'Test message');
+        $errorMessage = new ExceptionMessage(9999, 'TEST_CODE', 'Test message');
         $this->exception = new ConcreteTestException($errorMessage);
     }
 
@@ -22,15 +22,19 @@ class AbstractExceptionTest extends TestCase
     {
         $this->assertSame('Test message', $this->exception->getMessage());
         $this->assertSame(['code' => 'TEST_CODE'], $this->exception->getContext());
+        $this->assertSame('TEST_CODE', $this->exception->getErrorCode());
+        $this->assertSame(9999, $this->exception->getCode());
     }
 
     public function testExceptionWithContext(): void
     {
-        $errorMessage = new ExceptionMessage('TEST_CODE', 'Test message');
+        $errorMessage = new ExceptionMessage(9999, 'TEST_CODE', 'Test message');
         $context = ['key' => 'value'];
         $exception = new ConcreteTestException($errorMessage, null, $context);
 
         $this->assertSame(['code' => 'TEST_CODE', 'key' => 'value'], $exception->getContext());
+        $this->assertSame('TEST_CODE', $exception->getErrorCode());
+        $this->assertSame(9999, $exception->getCode());
     }
 
     public function testAddContext(): void
@@ -44,22 +48,25 @@ class AbstractExceptionTest extends TestCase
     public function testExceptionWithPrevious(): void
     {
         $previousException = new \Exception('Previous exception');
-        $errorMessage = new ExceptionMessage('TEST_CODE', 'Test message');
+        $errorMessage = new ExceptionMessage(9999, 'TEST_CODE', 'Test message');
         $exception = new ConcreteTestException($errorMessage, $previousException);
 
         $this->assertSame($previousException, $exception->getPrevious());
+        $this->assertSame(9999, $exception->getCode());
     }
 
-    protected function assertExceptionStructure(AbstractException $exception, string $expectedCode, string $expectedMessage): void
+    protected function assertExceptionStructure(AbstractException $exception, string $expectedErrorCode, string $expectedMessage, int $expectedCode): void
     {
         $this->assertInstanceOf(AbstractException::class, $exception);
         $this->assertSame($expectedMessage, $exception->getMessage());
         $this->assertArrayHasKey('code', $exception->getContext());
-        $this->assertSame($expectedCode, $exception->getContext()['code']);
+        $this->assertSame($expectedErrorCode, $exception->getContext()['code']);
+        $this->assertSame($expectedErrorCode, $exception->getErrorCode());
+        $this->assertSame($expectedCode, $exception->getCode());
     }
 }
 
-// Concrete implementation of AbstractException for testing
+// Implementação concreta de AbstractException para teste
 final class ConcreteTestException extends AbstractException
 {
     public function addTestContext(string $key, mixed $value): self

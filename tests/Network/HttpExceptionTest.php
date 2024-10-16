@@ -13,13 +13,23 @@ final class HttpExceptionTest extends AbstractExceptionTest
     {
         $statusCode = 404;
         $exception = HttpException::clientError($statusCode);
-        $this->assertExceptionStructure($exception, 'HTTP_CLIENT_ERROR', "HTTP client error with status code: {$statusCode}");
+        $this->assertExceptionStructure(
+            $exception,
+            'HTTP_CLIENT_ERROR',
+            "HTTP client error with status code: {$statusCode}",
+            2203
+        );
     }
 
     public function testServerError(): void
     {
         $statusCode = 500;
         $exception = HttpException::serverError($statusCode);
-        $this->assertExceptionStructure($exception, 'HTTP_SERVER_ERROR', "HTTP server error with status code: {$statusCode}");
+        $this->assertExceptionStructure(
+            $exception,
+            'HTTP_SERVER_ERROR',
+            "HTTP server error with status code: {$statusCode}",
+            2204
+        );
     }
 }

@@ -13,13 +13,23 @@ final class MiddlewareExceptionTest extends AbstractExceptionTest
     {
         $middlewareName = 'AuthMiddleware';
         $exception = MiddlewareException::invalidMiddleware($middlewareName);
-        $this->assertExceptionStructure($exception, 'INVALID_MIDDLEWARE', "Invalid middleware: {$middlewareName}");
+        $this->assertExceptionStructure(
+            $exception,
+            'INVALID_MIDDLEWARE',
+            "Invalid middleware: {$middlewareName}",
+            2101
+        );
     }
 
     public function testMiddlewareExecutionFailed(): void
     {
         $middlewareName = 'RateLimitMiddleware';
         $exception = MiddlewareException::middlewareExecutionFailed($middlewareName);
-        $this->assertExceptionStructure($exception, 'MIDDLEWARE_EXECUTION_FAILED', "Execution failed for middleware: {$middlewareName}");
+        $this->assertExceptionStructure(
+            $exception,
+            'MIDDLEWARE_EXECUTION_FAILED',
+            "Execution failed for middleware: {$middlewareName}",
+            2102
+        );
     }
 }

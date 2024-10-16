@@ -12,12 +12,22 @@ final class EncryptionExceptionTest extends AbstractExceptionTest
     public function testEncryptionFailed(): void
     {
         $exception = EncryptionException::encryptionFailed();
-        $this->assertExceptionStructure($exception, 'ENCRYPTION_FAILED', 'Encryption operation failed');
+        $this->assertExceptionStructure(
+            $exception,
+            'ENCRYPTION_FAILED',
+            'Encryption operation failed',
+            2601
+        );
     }
 
     public function testDecryptionFailed(): void
     {
         $exception = EncryptionException::decryptionFailed();
-        $this->assertExceptionStructure($exception, 'DECRYPTION_FAILED', 'Decryption operation failed');
+        $this->assertExceptionStructure(
+            $exception,
+            'DECRYPTION_FAILED',
+            'Decryption operation failed',
+            2602
+        );
     }
 }

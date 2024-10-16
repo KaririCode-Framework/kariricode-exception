@@ -10,11 +10,17 @@ use KaririCode\Exception\ExceptionMessage;
 
 final class ValidationException extends AbstractException
 {
+    private const CODE_VALIDATION_FAILED = 3101;
+
     private array $validationErrors = [];
 
     public static function create(): self
     {
-        return new self(new ExceptionMessage('VALIDATION_FAILED', 'Validation failed'));
+        return new self(new ExceptionMessage(
+            self::CODE_VALIDATION_FAILED,
+            'VALIDATION_FAILED',
+            'Validation failed'
+        ));
     }
 
     public function addError(string $field, ErrorMessage $errorMessage): self
