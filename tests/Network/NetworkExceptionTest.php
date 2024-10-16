@@ -13,13 +13,23 @@ final class NetworkExceptionTest extends AbstractExceptionTest
     {
         $host = 'example.com';
         $exception = NetworkException::connectionFailed($host);
-        $this->assertExceptionStructure($exception, 'CONNECTION_FAILED', "Failed to connect to host: {$host}");
+        $this->assertExceptionStructure(
+            $exception,
+            'CONNECTION_FAILED',
+            "Failed to connect to host: {$host}",
+            2201
+        );
     }
 
     public function testTimeout(): void
     {
         $operation = 'HTTP request';
         $exception = NetworkException::timeout($operation);
-        $this->assertExceptionStructure($exception, 'TIMEOUT', "Network operation timed out: {$operation}");
+        $this->assertExceptionStructure(
+            $exception,
+            'TIMEOUT',
+            "Network operation timed out: {$operation}",
+            2202
+        );
     }
 }

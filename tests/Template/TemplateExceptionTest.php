@@ -13,13 +13,23 @@ final class TemplateExceptionTest extends AbstractExceptionTest
     {
         $templateName = 'user/profile.html.twig';
         $exception = TemplateException::templateNotFound($templateName);
-        $this->assertExceptionStructure($exception, 'TEMPLATE_NOT_FOUND', "Template not found: {$templateName}");
+        $this->assertExceptionStructure(
+            $exception,
+            'TEMPLATE_NOT_FOUND',
+            "Template not found: {$templateName}",
+            3001
+        );
     }
 
     public function testRenderingFailed(): void
     {
         $templateName = 'email/welcome.html.twig';
         $exception = TemplateException::renderingFailed($templateName);
-        $this->assertExceptionStructure($exception, 'RENDERING_FAILED', "Failed to render template: {$templateName}");
+        $this->assertExceptionStructure(
+            $exception,
+            'RENDERING_FAILED',
+            "Failed to render template: {$templateName}",
+            3002
+        );
     }
 }

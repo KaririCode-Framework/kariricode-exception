@@ -11,20 +11,22 @@ final class ExceptionMessageTest extends TestCase
 {
     public function testExceptionMessageCreation(): void
     {
-        $code = 'TEST_CODE';
+        $code = 9999;
+        $errorCode = 'TEST_CODE';
         $message = 'Test message';
-        $exceptionMessage = new ExceptionMessage($code, $message);
+        $exceptionMessage = new ExceptionMessage($code, $errorCode, $message);
 
         $this->assertSame($code, $exceptionMessage->getCode());
+        $this->assertSame($errorCode, $exceptionMessage->getErrorCode());
         $this->assertSame($message, $exceptionMessage->getMessage());
     }
 
     public function testExceptionMessageImmutability(): void
     {
-        $exceptionMessage = new ExceptionMessage('CODE', 'Message');
+        $exceptionMessage = new ExceptionMessage(9999, 'CODE', 'Message');
 
         $this->expectException(\Error::class);
         $reflectionProperty = new \ReflectionProperty($exceptionMessage, 'code');
-        $reflectionProperty->setValue($exceptionMessage, 'NEW_CODE');
+        $reflectionProperty->setValue($exceptionMessage, 1234);
     }
 }

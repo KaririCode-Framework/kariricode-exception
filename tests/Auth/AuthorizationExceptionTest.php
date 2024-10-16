@@ -13,13 +13,13 @@ final class AuthorizationExceptionTest extends AbstractExceptionTest
     {
         $action = 'delete_user';
         $exception = AuthorizationException::insufficientPermissions($action);
-        $this->assertExceptionStructure($exception, 'INSUFFICIENT_PERMISSIONS', "Insufficient permissions for action: {$action}");
+        $this->assertExceptionStructure($exception, 'INSUFFICIENT_PERMISSIONS', "Insufficient permissions for action: {$action}", 1101);
     }
 
     public function testRoleRequired(): void
     {
         $role = 'admin';
         $exception = AuthorizationException::roleRequired($role);
-        $this->assertExceptionStructure($exception, 'ROLE_REQUIRED', "Required role not present: {$role}");
+        $this->assertExceptionStructure($exception, 'ROLE_REQUIRED', "Required role not present: {$role}", 1102);
     }
 }

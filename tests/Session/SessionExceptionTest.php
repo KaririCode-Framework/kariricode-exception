@@ -12,12 +12,22 @@ final class SessionExceptionTest extends AbstractExceptionTest
     public function testSessionStartFailed(): void
     {
         $exception = SessionException::sessionStartFailed();
-        $this->assertExceptionStructure($exception, 'SESSION_START_FAILED', 'Failed to start session');
+        $this->assertExceptionStructure(
+            $exception,
+            'SESSION_START_FAILED',
+            'Failed to start session',
+            2801
+        );
     }
 
     public function testInvalidSessionId(): void
     {
         $exception = SessionException::invalidSessionId();
-        $this->assertExceptionStructure($exception, 'INVALID_SESSION_ID', 'Invalid session ID');
+        $this->assertExceptionStructure(
+            $exception,
+            'INVALID_SESSION_ID',
+            'Invalid session ID',
+            2802
+        );
     }
 }

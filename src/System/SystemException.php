@@ -9,18 +9,34 @@ use KaririCode\Exception\ExceptionMessage;
 
 final class SystemException extends AbstractException
 {
+    private const CODE_RESOURCE_UNAVAILABLE = 2901;
+    private const CODE_ENVIRONMENT_ERROR = 2902;
+    private const CODE_EXTENSION_NOT_LOADED = 2903;
+
     public static function resourceUnavailable(string $resource): self
     {
-        return new self(new ExceptionMessage('RESOURCE_UNAVAILABLE', "System resource unavailable: {$resource}"));
+        return new self(new ExceptionMessage(
+            self::CODE_RESOURCE_UNAVAILABLE,
+            'RESOURCE_UNAVAILABLE',
+            "System resource unavailable: {$resource}"
+        ));
     }
 
     public static function environmentError(string $details): self
     {
-        return new self(new ExceptionMessage('ENVIRONMENT_ERROR', "Environment error: {$details}"));
+        return new self(new ExceptionMessage(
+            self::CODE_ENVIRONMENT_ERROR,
+            'ENVIRONMENT_ERROR',
+            "Environment error: {$details}"
+        ));
     }
 
     public static function extensionNotLoaded(string $extension): self
     {
-        return new self(new ExceptionMessage('EXTENSION_NOT_LOADED', "PHP extension not loaded: {$extension}"));
+        return new self(new ExceptionMessage(
+            self::CODE_EXTENSION_NOT_LOADED,
+            'EXTENSION_NOT_LOADED',
+            "PHP extension not loaded: {$extension}"
+        ));
     }
 }

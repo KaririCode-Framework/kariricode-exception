@@ -14,20 +14,35 @@ final class ExternalServiceExceptionTest extends AbstractExceptionTest
         $service = 'PaymentGateway';
         $error = 'Invalid API key';
         $exception = ExternalServiceException::apiError($service, $error);
-        $this->assertExceptionStructure($exception, 'API_ERROR', "Error from external service '{$service}': {$error}");
+        $this->assertExceptionStructure(
+            $exception,
+            'API_ERROR',
+            "Error from external service '{$service}': {$error}",
+            1701
+        );
     }
 
     public function testServiceUnavailable(): void
     {
         $service = 'EmailService';
         $exception = ExternalServiceException::serviceUnavailable($service);
-        $this->assertExceptionStructure($exception, 'SERVICE_UNAVAILABLE', "External service unavailable: {$service}");
+        $this->assertExceptionStructure(
+            $exception,
+            'SERVICE_UNAVAILABLE',
+            "External service unavailable: {$service}",
+            1702
+        );
     }
 
     public function testInvalidResponse(): void
     {
         $service = 'WeatherAPI';
         $exception = ExternalServiceException::invalidResponse($service);
-        $this->assertExceptionStructure($exception, 'INVALID_RESPONSE', "Invalid response from external service: {$service}");
+        $this->assertExceptionStructure(
+            $exception,
+            'INVALID_RESPONSE',
+            "Invalid response from external service: {$service}",
+            1703
+        );
     }
 }
