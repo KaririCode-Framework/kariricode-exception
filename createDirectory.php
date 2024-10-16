@@ -12,47 +12,48 @@ function createDirectory(string $path): void
 function createFile(string $filePath): void
 {
     $content = "<?php\n\ndeclare(strict_types=1);\n";
+
     if (!file_exists($filePath)) {
         file_put_contents($filePath, $content);
     }
 }
 
-$baseDir = __DIR__ . '/src';
+$baseDir = __DIR__ . '/tests';
 
 // Directories and their respective files
 $structure = [
-    'AbstractException.php',
-    'AbstractErrorMessage.php',
-    'Contract/ErrorMessage.php',
-    'Contract/Throwable.php',
-    'CommonErrorMessages.php',
-    'Auth/AuthenticationException.php',
-    'Auth/AuthorizationException.php',
-    'Validation/ValidationException.php',
-    'Validation/RuleViolationException.php',
-    'File/FileException.php',
-    'Input/InputException.php',
-    'Runtime/RuntimeException.php',
-    'System/SystemException.php',
-    'Security/SecurityException.php',
-    'Security/EncryptionException.php',
-    'Config/ConfigurationException.php',
-    'Network/NetworkException.php',
-    'Network/HttpException.php',
-    'Database/DatabaseException.php',
-    'Cache/CacheException.php',
-    'ExternalService/ExternalServiceException.php',
-    'Localization/LocalizationException.php',
-    'Event/EventException.php',
-    'Middleware/MiddlewareException.php',
-    'Queue/QueueException.php',
-    'Routing/RoutingException.php',
-    'Template/TemplateException.php',
-    'Session/SessionException.php',
-    'Container/ContainerException.php',
+    'AbstractExceptionTest.php',
+    'AbstractErrorMessageTest.php',
+    'Contract/ErrorMessageTest.php',
+    'Contract/ThrowableTest.php',
+    'CommonErrorMessagesTest.php',
+    'Auth/AuthenticationExceptionTest.php',
+    'Auth/AuthorizationExceptionTest.php',
+    'Validation/ValidationExceptionTest.php',
+    'Validation/RuleViolationExceptionTest.php',
+    'File/FileExceptionTest.php',
+    'Input/InputExceptionTest.php',
+    'Runtime/RuntimeExceptionTest.php',
+    'System/SystemExceptionTest.php',
+    'Security/SecurityExceptionTest.php',
+    'Security/EncryptionExceptionTest.php',
+    'Config/ConfigurationExceptionTest.php',
+    'Network/NetworkExceptionTest.php',
+    'Network/HttpExceptionTest.php',
+    'Database/DatabaseExceptionTest.php',
+    'Cache/CacheExceptionTest.php',
+    'ExternalService/ExternalServiceExceptionTest.php',
+    'Localization/LocalizationExceptionTest.php',
+    'Event/EventExceptionTest.php',
+    'Middleware/MiddlewareExceptionTest.php',
+    'Queue/QueueExceptionTest.php',
+    'Routing/RoutingExceptionTest.php',
+    'Template/TemplateExceptionTest.php',
+    'Session/SessionExceptionTest.php',
+    'Container/ContainerExceptionTest.php',
 ];
 
-// Create directories and files
+// Create directories and files for tests
 foreach ($structure as $filePath) {
     $fullPath = $baseDir . '/' . $filePath;
     $directory = dirname($fullPath);
@@ -64,4 +65,4 @@ foreach ($structure as $filePath) {
     createFile($fullPath);
 }
 
-echo "Directories and files created successfully!\n";
+echo "Test directories and files created successfully!\n";
