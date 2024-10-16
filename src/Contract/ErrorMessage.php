@@ -6,7 +6,9 @@ namespace KaririCode\Exception\Contract;
 
 interface ErrorMessage
 {
-    public function getCode(): string;
+    public function getCode(): int;
+
+    public function getErrorCode(): string;
 
     public function getMessage(): string;
 }

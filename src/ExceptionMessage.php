@@ -9,14 +9,20 @@ use KaririCode\Exception\Contract\ErrorMessage;
 final class ExceptionMessage implements ErrorMessage
 {
     public function __construct(
-        private readonly string $code,
+        private readonly int $code,
+        private readonly string $errorCode,
         private readonly string $message
     ) {
     }
 
-    public function getCode(): string
+    public function getCode(): int
     {
         return $this->code;
+    }
+
+    public function getErrorCode(): string
+    {
+        return $this->errorCode;
     }
 
     public function getMessage(): string

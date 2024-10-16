@@ -13,8 +13,10 @@ abstract class AbstractException extends \Exception implements Throwable
 
     public function __construct(ErrorMessage $errorMessage, ?\Throwable $previous = null, array $context = [])
     {
+
+        $this->context = array_merge(['code' => $errorMessage->getCode()], $context);
+
         parent::__construct($errorMessage->getMessage(), 0, $previous);
-        $this->context = $context;
     }
 
     public function getContext(): array
