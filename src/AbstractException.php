@@ -16,7 +16,6 @@ abstract class AbstractException extends \Exception implements Throwable
     {
         $this->errorCode = $errorMessage->getErrorCode();
         $this->context = array_merge(['code' => $this->errorCode], $context);
-
         parent::__construct($errorMessage->getMessage(), $errorMessage->getCode(), $previous);
     }
 
@@ -35,5 +34,10 @@ abstract class AbstractException extends \Exception implements Throwable
         $this->context[$key] = $value;
 
         return $this;
+    }
+
+    protected static function createException(int $code, string $errorCode, string $message): self
+    {
+        return new static(new ExceptionMessage($code, $errorCode, $message));
     }
 }
