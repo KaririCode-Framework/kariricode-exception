@@ -46,9 +46,9 @@ composer require kariricode/exception
 
 ### Uso Básico
 
-#### Usando Exceções Pré-definidas no Seu Código
+#### Usando Exceções Pré-definidas em Seu Código
 
-O componente KaririCode Exception oferece uma variedade de exceções pré-definidas que você pode usar para lidar com cenários comuns de erro de maneira profissional e estruturada. Abaixo está um exemplo de como usar essas exceções em um contexto orientado a objetos.
+O componente de Exceção do KaririCode fornece uma variedade de exceções pré-definidas que você pode usar para lidar com cenários de erro comuns de maneira profissional e estruturada. Abaixo está um exemplo de como usar essas exceções em um contexto orientado a objetos.
 
 ```php
 <?php
@@ -73,12 +73,17 @@ final class UserController extends BaseController
     {
         $userId = (int)$request->getAttribute('userId');
 
-        $userData = $this->userService->getUserData($userId);
-        return $this->responseBuilder($response)
-            ->setData($userData)
-            ->setHeader('Content-Type', 'application/json')
-            ->setStatus(200)
-            ->build();
+        try {
+            $userData = $this->userService->getUserData($userId);
+            return $this->responseBuilder($response)
+                ->setData($userData)
+                ->setHeader('Content-Type', 'application/json')
+                ->setStatus(200)
+                ->build();
+        } catch (\Exception $e) {
+            // Handle exceptions and return appropriate error response
+            return $this->errorResponse($response, $e);
+        }
     }
 }
 
@@ -87,21 +92,30 @@ namespace YourApp\Service;
 
 use YourApp\Repository\UserRepository;
 use KaririCode\Contract\Log\Logger;
+use KaririCode\Exception\Database\DatabaseException;
 
 class UserService
 {
-    private UserRepository $userRepository;
-    private Logger $logger;
-
-    public function __construct(UserRepository $userRepository, Logger $logger)
-    {
-        $this->userRepository = $userRepository;
-        $this->logger = $logger;
+    public function __construct(
+        private UserRepository $userRepository,
+        private Logger $logger
+    ) {
     }
 
+    /**
+     * @throws DatabaseException
+     */
     public function getUserData(int $userId): array
     {
-        return $this->userRepository->findUserById($userId);
+        try {
+            return $this->userRepository->findUserById($userId);
+        } catch (DatabaseException $e) {
+            $this->logger->error('Failed to retrieve user data', [
+                'userId' => $userId,
+                'error' => $e->getMessage(),
+            ]);
+            throw $e;
+        }
     }
 }
 
@@ -113,26 +127,29 @@ use KaririCode\Exception\Database\DatabaseException;
 
 class UserRepository
 {
-    private EntityManager $entityManager;
-
-    public function __construct(EntityManager $entityManager)
+    public function __construct(private EntityManager $entityManager)
     {
-        $this->entityManager = $entityManager;
     }
 
+    /**
+     * @throws DatabaseException
+     */
     public function findUserById(int $userId): array
     {
         $sql = 'SELECT * FROM users WHERE id = ?';
-        $userData = $this->entityManager->query($sql, [$userId]);
+        try {
+            $userData = $this->entityManager->query($sql, [$userId]);
 
-        if ($userData === false) {
-            throw DatabaseException::queryError($sql, $this->entityManager->getLastError());
+            if (empty($userData)) {
+                throw DatabaseException::recordNotFound('User', $userId);
+            }
+
+            return $userData;
+        } catch (\Exception $e) {
+            throw DatabaseException::queryError($sql, $e->getMessage());
         }
-
-        return $userData;
     }
 }
-
 ```
 
 ### Uso Avançado
@@ -147,7 +164,6 @@ declare(strict_types=1);
 namespace YourApp\Exception;
 
 use KaririCode\Exception\AbstractException;
-use KaririCode\Exception\ExceptionMessage;
 
 final class OrderException extends AbstractException
 {
@@ -155,11 +171,11 @@ final class OrderException extends AbstractException
 
     public static function orderLimitExceeded(float $totalAmount, float $userOrderLimit): self
     {
-        return new self(new ExceptionMessage(
+        return self::createException(
             self::CODE_ORDER_LIMIT_EXCEEDED,
             'ORDER_LIMIT_EXCEEDED',
-            "Valor do pedido (${totalAmount}) excede o limite do usuário (${userOrderLimit})"
-        ));
+            "Order amount (${totalAmount}) exceeds user limit (${userOrderLimit})"
+        );
     }
 }
 ```
@@ -192,20 +208,27 @@ final class OrderService
      */
     public function placeOrder(int $userId, array $items, float $totalAmount): void
     {
-		$userOrderLimit = $this->orderRepository->getUserOrderLimit($userId);
+        try {
+            $userOrderLimit = $this->orderRepository->getUserOrderLimit($userId);
 
-		if ($totalAmount > $userOrderLimit) {
-			$this->logger->warning('Pedido excede o limite do usuário', [
-				'userId' => $userId,
-				'orderAmount' => $totalAmount,
-				'userLimit' => $userOrderLimit,
-			]);
+            if ($totalAmount > $userOrderLimit) {
+                $this->logger->warning('Order exceeds user limit', [
+                    'userId' => $userId,
+                    'orderAmount' => $totalAmount,
+                    'userLimit' => $userOrderLimit,
+                ]);
 
-			throw OrderException::orderLimitExceeded($totalAmount, $userOrderLimit);
-		}
+                throw OrderException::orderLimitExceeded($totalAmount, $userOrderLimit);
+            }
 
-		$this->orderRepository->createOrder($userId, $items, $totalAmount);
-
+            $this->orderRepository->createOrder($userId, $items, $totalAmount);
+        } catch (DatabaseException $e) {
+            $this->logger->error('Database error while placing order', [
+                'userId' => $userId,
+                'error' => $e->getMessage(),
+            ]);
+            throw $e;
+        }
     }
 }
 ```
