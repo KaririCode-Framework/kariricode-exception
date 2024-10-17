@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace KaririCode\Exception\Session;
 
 use KaririCode\Exception\AbstractException;
-use KaririCode\Exception\ExceptionMessage;
 
 final class SessionException extends AbstractException
 {
@@ -14,19 +13,19 @@ final class SessionException extends AbstractException
 
     public static function sessionStartFailed(): self
     {
-        return new self(new ExceptionMessage(
+        return self::createException(
             self::CODE_SESSION_START_FAILED,
             'SESSION_START_FAILED',
             'Failed to start session'
-        ));
+        );
     }
 
     public static function invalidSessionId(): self
     {
-        return new self(new ExceptionMessage(
+        return self::createException(
             self::CODE_INVALID_SESSION_ID,
             'INVALID_SESSION_ID',
             'Invalid session ID'
-        ));
+        );
     }
 }

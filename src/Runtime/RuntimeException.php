@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace KaririCode\Exception\Runtime;
 
 use KaririCode\Exception\AbstractException;
-use KaririCode\Exception\ExceptionMessage;
 
 final class RuntimeException extends AbstractException
 {
@@ -15,28 +14,28 @@ final class RuntimeException extends AbstractException
 
     public static function unexpectedValue(string $details): self
     {
-        return new self(new ExceptionMessage(
+        return self::createException(
             self::CODE_UNEXPECTED_VALUE,
             'UNEXPECTED_VALUE',
             "Unexpected value: {$details}"
-        ));
+        );
     }
 
     public static function outOfMemory(): self
     {
-        return new self(new ExceptionMessage(
+        return self::createException(
             self::CODE_OUT_OF_MEMORY,
             'OUT_OF_MEMORY',
             'Out of memory error'
-        ));
+        );
     }
 
     public static function classNotFound(string $className): self
     {
-        return new self(new ExceptionMessage(
+        return self::createException(
             self::CODE_CLASS_NOT_FOUND,
             'CLASS_NOT_FOUND',
             "Class not found: {$className}"
-        ));
+        );
     }
 }
