@@ -6,7 +6,7 @@ namespace KaririCode\Exception\Runtime;
 
 use KaririCode\Exception\AbstractException;
 
-final class RuntimeException extends AbstractException
+class RuntimeException extends AbstractException
 {
     private const CODE_UNEXPECTED_VALUE = 2501;
     private const CODE_OUT_OF_MEMORY = 2502;
