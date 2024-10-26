@@ -36,8 +36,8 @@ abstract class AbstractException extends \Exception implements Throwable
         return $this;
     }
 
-    protected static function createException(int $code, string $errorCode, string $message): self
+    protected static function createException(int $code, string $errorCode, string $message, ?\Throwable $previous = null): self
     {
-        return new static(new ExceptionMessage($code, $errorCode, $message));
+        return new static(new ExceptionMessage($code, $errorCode, $message), $previous);
     }
 }
