@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace KaririCode\Exception;
 
 use KaririCode\Exception\Contract\ErrorMessage;
-use KaririCode\Exception\Contract\Throwable;
 
-abstract class AbstractException extends \Exception implements Throwable
+abstract class AbstractException extends \Exception implements \Throwable
 {
     protected array $context = [];
     private string $errorCode;
@@ -29,15 +28,19 @@ abstract class AbstractException extends \Exception implements Throwable
         return $this->errorCode;
     }
 
-    protected function addContext(string $key, mixed $value): self
+    protected function addContext(string $key, mixed $value): static
     {
         $this->context[$key] = $value;
 
         return $this;
     }
 
-    protected static function createException(int $code, string $errorCode, string $message, ?\Throwable $previous = null): self
-    {
+    protected static function createException(
+        int $code,
+        string $errorCode,
+        string $message,
+        ?\Throwable $previous = null
+    ): static {
         return new static(new ExceptionMessage($code, $errorCode, $message), $previous);
     }
 }
